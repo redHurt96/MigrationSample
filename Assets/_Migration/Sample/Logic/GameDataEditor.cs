@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -7,17 +8,21 @@ namespace _Migration
     public class GameDataEditor : MonoBehaviour
     {
         public string CurrentVersion;
-        private const string KEY = "GameData";
         
         [SerializeField] private GameData _gameData;
         
+        private string Path => System.IO.Path.Combine(Application.streamingAssetsPath, "GameData.json");
+        
         [Button]
-        private void Save() => 
-            PlayerPrefs.SetString(KEY, JsonConvert.SerializeObject(_gameData));
+        private void Save() =>
+            File.WriteAllText(Path, JsonConvert.SerializeObject(_gameData));
 
         [Button]
-        private void Load() => 
+        private void Load()
+        {
+            string json = File.ReadAllText(Path);
             _gameData = new Migrator(CurrentVersion)
-                .Execute<GameData>(PlayerPrefs.GetString(KEY));
+                .Execute<GameData>(json);
+        }
     }
 }
