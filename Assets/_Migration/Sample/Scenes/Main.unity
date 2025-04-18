@@ -352,13 +352,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8418967b2a9c4f078dc199e13602de20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentVersion: 0.1.0
+  CurrentVersion: 0.2.0
   _gameData:
-    Version: 
-    FirstName: 
-    LastName: 
-    Wood: 0
-    Stone: 0
+    Version: 0.2.0
+    FirstName: FirstName
+    LastName: LastName
+    Resources:
+    - Name: Wood
+      Amount: 10
+    - Name: Stone
+      Amount: 15
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

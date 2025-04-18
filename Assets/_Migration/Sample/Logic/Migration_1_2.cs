@@ -9,9 +9,9 @@ namespace _Migration
         
         public JObject Migrate(JObject data)
         {
-            var woodAmount = data["Wood"]?.Value<int>() ?? 0;
-            var stoneAmount = data["Stone"]?.Value<int>() ?? 0;
-            var resources = data["Resources"] as JArray ?? new JArray();
+            int woodAmount = data["Wood"]?.Value<int>() ?? 0;
+            int stoneAmount = data["Stone"]?.Value<int>() ?? 0;
+            JArray resources = data["Resources"] as JArray ?? new JArray();
 
             resources.Add(JObject.FromObject(new { Name = "Wood", Amount = woodAmount }));
             resources.Add(JObject.FromObject(new { Name = "Stone", Amount = stoneAmount }));
