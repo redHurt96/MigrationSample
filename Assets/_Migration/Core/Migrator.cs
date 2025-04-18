@@ -19,9 +19,6 @@ namespace _Migration
         {
             JObject data = JObject.Parse(rawData);
             
-            if (data["Version"] == null)
-                data["Version"] = "0.0.0";
-            
             if (data["Version"]!.ToString() == _targetVersion)
                 return JsonConvert.DeserializeObject<T>(data.ToString());
             
