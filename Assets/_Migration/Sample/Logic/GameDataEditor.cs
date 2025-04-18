@@ -21,7 +21,7 @@ namespace _Migration
         private void Load()
         {
             string json = File.ReadAllText(Path);
-            _gameData = new Migrator(CurrentVersion)
+            _gameData = new Migrator(CurrentVersion, new Migration_0_1())
                 .Execute<GameData>(json);
         }
     }
