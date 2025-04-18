@@ -6,7 +6,8 @@ namespace _Migration
     public class GameData
     {
         public string Version = "0.0.0";
-        public string PlayerName;
+        public string FirstName;
+        public string LastName;
         public int Wood;
         public int Stone;
     }
