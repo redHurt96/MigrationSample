@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace _Migration
 {
@@ -8,7 +9,13 @@ namespace _Migration
         public string Version = "0.0.0";
         public string FirstName;
         public string LastName;
-        public int Wood;
-        public int Stone;
+        public List<Resource> Resources = new();
+    }
+    
+    [Serializable]
+    public class Resource
+    {
+        public string Name;
+        public int Amount;
     }
 }
