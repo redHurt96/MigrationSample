@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -7,12 +8,12 @@ namespace _Migration
     public class Migrator
     {
         private readonly string _targetVersion;
-        private readonly IMigration[] _migrations;
+        private readonly IOrderedEnumerable<IMigration> _migrations;
 
         public Migrator(string targetVersion, params IMigration[] migrations)
         {
             _targetVersion = targetVersion;
-            _migrations = migrations;
+            _migrations = migrations.OrderBy(x => x.ToVersion);
         }
 
         public T Execute<T>(string rawData)
@@ -20,20 +21,23 @@ namespace _Migration
             JObject data = JObject.Parse(rawData);
             
             if (data["Version"]!.ToString() == _targetVersion)
-                return JsonConvert.DeserializeObject<T>(data.ToString());
+                return Parse<T>(data);
             
-            foreach (IMigration migration in _migrations.OrderBy(x => x.FromVersion))
+            foreach (IMigration migration in _migrations)
             {
-                string version = data["Version"]!.ToString();
+                Version version = new(data["Version"]!.ToString());
                 
-                if (version == migration.FromVersion)
+                if (version.CompareTo(migration.ToVersion) < 0)
                 {
                     data = migration.Migrate(data);
-                    data["Version"] = migration.ToVersion;
+                    data["Version"] = migration.ToVersion.ToString();
                 }
             }
             
-            return JsonConvert.DeserializeObject<T>(data.ToString());
+            return Parse<T>(data);
         }
+        
+        private T Parse<T>(JObject data) => 
+            JsonConvert.DeserializeObject<T>(data.ToString());
     }
 }
